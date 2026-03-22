@@ -80,6 +80,6 @@ https://github.com/KarlaBlackie/Weather-frontend-m6
 
 # Autor
 Karla Irene Jara Mena.
-Desarrollado como parte del bootcamp de Frontend.
+Desarrollado como parte del bootcamp de Frontend.-
 
   
