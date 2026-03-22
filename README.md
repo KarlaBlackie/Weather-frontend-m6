@@ -1,128 +1,85 @@
-# Weather Frontend M5 - Clima, estadísticas y bienestar.
-## Descripción
-Aplicación web que combina datos climáticos reales con consejos de salud emocional personalizados para 12 ciudades del mundo. Cada ciudad tiene un mensaje emocional único que se activa al voltear la tarjeta.
+# clima-frontend-m6
+App de clima y bienestar
 
-## Temática
-Clima + bienestar emocional. Los usuarios ven el clima actual, pronóstico semanal, estadísticas y consejos según el tiempo.
+Esta aplicación es una SPA(Single page application) desarrollada con Vue.js que permite explorar el clima de distintas ciudades del mundo junto con consejos de bienestar emocional.
+El usuario puede navegar entre un listado de ciudades, ver su clima actual y acceder a un detalle con pronóstico semanal y estadísticas.
 
+# Vistas principales
 
-## Estructura de clases (POO)
+# Home
+*Lista de ciudades con:
+  *Nombre
+  *Imagen
+  *Temperatura actual
+  *Icono del clima
+*Buscador de ciudades en tiempo real(v-model + v-for)
+*Navegación a la lista vista de detalle de cada ciudad mediante '<router-link>'
 
-### WeatherApiClient
-**Responsabilidad:** consumir la API de Open-Meteo.
+# Detalle de ciudad
+*Información completa del clima:
+  *Temperatura actual
+  *Velocidad del viento
 
-**Métodos** 
-async getWeatherData(lat, lon): construye URL con coordenadas y devuelve datos JSON(clima actual + pronóstico 7 días)
+*Pronóstico de la semana(V-for sobre días)
+*Estadísticas
+  *Temperatura máxima
+  *Temperatura mínima
+  *Promedio
+  *Días soleados y con lluvia
 
-### WeatherApp(clase principal) 
-**Responsabilidad:** lógica de negocio completa.
+*Consejos de bienestar emocional asociados a cada ciudad.
+*Botón para volver al Home
 
-**Propiedades**:
+# Rutas(Vue Router)
+* / => Home(listado de ciudades)
+*'/ciudad/:id'=> Detallle de una ciudad
 
--this.apiClient: Instancia de WeatherApiClient.
--this.ciudades: Array de 12 objetos con id, nombre, lat/lon, imagen y mensaje emocional.
+La navegación se realiza sin recargar la página utilizando Vue Router.
 
+# Tecnologías utilizadas
 
- **Métodos principales** 
--async init(): inicializa la app llamando crearTarjetas().
+*Vue.js 3(Composition API)
+*Vue Router
+*Javascript(ES6)
+*Bootstrap(estilos)
+*API Open-Meteo(datos climáticos)
 
--async crearTarjetas(): pide datos API por ciudad, genera HTML dinámico con clima actual.
+# Funcionalidades principales
+*Renderizado dinámico con v-for
+*Condicionales con v-if / v-show.
+*Binding de datos con {{}}
+*Manejo de eventos con @click y @submit.
+*Uso de v-model para el buscador de ciudades.
+*Consumo de API Open-Meteo para datos climáticos
+*SPA con navegación entre visitas sin recarga de la página.
 
--async seleccionarYMostrar(id): muestra detalle con pronóstico, estadísticas y alertas.
+# Cómo ejecutar el proyecto
+1.Clonar el repositorio
+bash
+git clone https://github.com/MI-USUARIO/MI-REPO.git
 
--getClimaInfo(code): traduce códigos weathercode de Open-Meteo a estados e íconos Bootstrap Icons.
-
--calcularEstadisticas(daily):calcula min/max/promedio semanal + días soleados/ lluviosos + alertas.
-
-
-## API de clima utilizada
-**Nombre**: Open-meteo Weather Forescast API(gratuita, sin clave API)
-**URL base**: https://api.open-meteo.com/v1/forecast
-
-**Parámetros usados**:
-latitude, longitude (coordenadas)
-current_weather=true (clima actual)
-daily=temperature_2m_max,temperature_2m_min,weathercode (pronóstico semanal) timezone=auto
-
-**Documentación**: https://open-meteo.com/en/docs
-
-**Datos procesados**:
-
-current_weather.weathercode,current_weather.temperature.
-
-daily.weathercode[], daily.temperature_2m_min[],daily.temperature_2m_max[].
-
-
-
-## Cálculo de estadísticas
-
-- **Entrada**: daily de Open-Meteo(arrays de 7 días)
-
-- **Salida**: 
-minSemanal : Math.min(...daily.temperature_2m_min)
-maxSemanal: Math.max(...daily.temperature_2m_max)
-promedio: promedio de temperature_2m_max (toFixed(1))
-diasSoleados: codes.filter(c => c === 0).length (despejado)
-diasLluviosos: codes.filter (c => c >= 51 && c <= 67).length (lluvia)
+2.Entrar a la carpeta del proyecto
 
 
- **Alertas**(reglas simples)
+3.Instalar dependencias
+npm install
 
-- maxSemanal > 30: "Alerta de calor"(alert-danger).
+4.Ejecutar el servidor
+npm run dev
 
-- diasLluviosos >=3: "Semana lluviosa"(alert-warning).
+5.Abrir en el navegador
+http://localhost:5173
 
--Default: "Condiciones estables" (alert-success)
+# Repositorio
+https://github.com/KarlaBlackie/Weather-frontend-m6
 
+# Notas
+*La aplicación utiliza datos reales desde la API de Open-Meteo
+*Se implementó una interfaz interactiva y navegación como SPA con Vue Router.
+*Se agregaron mejoras visuales como iconos de clima y estado de carga.
 
+# Autor
+Karla Jara Mena.
+Desarrollado como parte del bootcamp de Frontend.
 
-## Funcionalidades
-
-**Home(12 ciudades)**
--Tarjetas glassmorphism con flip 3D (girarTarjeta()).
--Clima actual real(temperatura + ícono)
--"Cargando datos climáticos..." mientras espera API.
--Click "Ver más" => detalle.
-
-
-
-  ## **Detalle**  
-  -Imagen, clima actual, mensaje emocional.
-  -Pronóstico 7 días (nombre día + min/max + estado)
-
-  **Análisis semanal**
-
-  Mín: X°C | Máx: Y°C | Promedio : Z°C
-  Días soleados : A | Días lluviosos: B
-  Recomendación: ...
-
-  **Alertas** dinámicas con Bootstrap badges.
-
-
-  ## Navegación SPA
-  Botón "Volver" + navbar "Home" => volverInicio().
-  Sin recargas, solo DOM manipulation.
-
-  ##Tecnologías
-  HTML + Bootstrap 5.3.3(responsive grid, navbar, cards)
-
-  JavaScript ES6 (clases, async/await, template literals, arrow functions)
-
-  Bootstrap Icons(íconos clima)
-
-  Open-Meteo API (datos reales)
-
-
-
-## Commits
-Commits descriptivos incluídos.
-
-
-## Enlace al repositorio público
-[Ver repositorio completo] https://github.com/KarlaBlackie/Weather-frontend-m5
-
-**Desarrollado por Karla Jara Mena**
-*Bootcamp frontend Trainee - 2026*
-
-KarlaBlackie
-Karla Irene Jara Mena
+  
