@@ -79,7 +79,7 @@ https://github.com/KarlaBlackie/Weather-frontend-m6
 *Se agregaron mejoras visuales como iconos de clima y estado de carga.
 
 # Autor
-Karla Jara Mena.
+Karla Irene Jara Mena.
 Desarrollado como parte del bootcamp de Frontend.
 
   
